@@ -1,7 +1,6 @@
 package org.finke.kazoo_java_sdk;
 
 import org.finke.kazoo_java_sdk.net.Scheme;
-import sun.misc.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
