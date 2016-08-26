@@ -1,5 +1,6 @@
 package org.finke.kazoo_java_sdk;
 
+import org.finke.kazoo_java_sdk.auth.AuthTokenInterface;
 import org.finke.kazoo_java_sdk.net.Scheme;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class CrossBar {
      * default CrossBar port
      * @param host Server hostname or IP address
      */
-    public CrossBar(String host) throws URISyntaxException {
+    public CrossBar(String host, AuthTokenInterface authToken) throws URISyntaxException {
         parseHost(host);
     }
 
@@ -85,15 +86,17 @@ public class CrossBar {
         StringBuilder builder = new StringBuilder();
         Reader in = new InputStreamReader(contentStream, StandardCharsets.US_ASCII);
         char[] buffer = new char[1024];
-        while(true) {
-            int rsz = in.read(buffer, 0, buffer.length);
-            if(rsz < 0) {
-                break;
-            }
+        int rsz;
+        while((rsz = in.read(buffer)) != -1) {
             builder.append(buffer, 0, rsz);
         }
         return builder.toString();
     }
+
+    /**
+     *
+     */
+    
 
     /**
      * Parse a host string for scheme and host
