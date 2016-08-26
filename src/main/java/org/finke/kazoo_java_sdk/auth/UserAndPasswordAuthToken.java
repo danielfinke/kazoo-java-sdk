@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -73,8 +74,16 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
         out.write(buildTokenJson().getBytes("UTF-8"));
         out.close();
 
-        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
+        InputStream contentStream = (InputStream)urlConnection.getContent();
+        StringBuilder builder = new StringBuilder();
+        InputStreamReader in = new InputStreamReader(contentStream, StandardCharsets.US_ASCII);
+        char[] buffer = new char[1024];
+        int rsz;
+        while((rsz = in.read(buffer)) != -1) {
+            builder.append(buffer, 0, rsz);
+        }
+        authToken = builder.toString();
+        return authToken;
     }
 
     public String getUsername() { return username; }
@@ -126,6 +135,7 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
      * Representation of JSON required for auth request payload
      */
     private class UserAndPasswordJson {
+        @SuppressWarnings("unused")
         @SerializedName("credentials") private final String md5;
         @SuppressWarnings("unused")
         private String accountId = null;
