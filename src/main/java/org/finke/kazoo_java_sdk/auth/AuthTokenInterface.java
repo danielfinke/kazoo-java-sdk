@@ -9,4 +9,5 @@ import java.io.IOException;
 public interface AuthTokenInterface {
     String getToken(String baseUrl) throws IOException;
     String getNewToken(String baseUrl) throws IOException;
+    String getAuthAccountId();
 }

@@ -1,4 +1,4 @@
-package org.finke.kazoo_java_sdk;
+package org.finke.kazoo_java_sdk.entity;
 
 /**
  * @author Daniel Finke

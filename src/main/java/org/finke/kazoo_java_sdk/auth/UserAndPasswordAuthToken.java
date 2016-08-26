@@ -88,6 +88,20 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
         return authToken;
     }
 
+    /**
+     * Get the account ID of the currently authenticated user if already
+     * authenticated
+     * @return The account ID of the currently authenticated user
+     */
+    @Override
+    public String getAuthAccountId() {
+        if(authToken == null) {
+            return null;
+        }
+
+        return accountId;
+    }
+
     public String getUsername() { return username; }
     public String getMd5() { return md5; }
     public String getAccountId() { return accountId; }
