@@ -7,6 +7,6 @@ import java.io.IOException;
  * @since 2016-08-08
  */
 public interface AuthTokenInterface {
-    String getToken() throws IOException;
-    String getNewToken() throws IOException;
+    String getToken(String baseUrl) throws IOException;
+    String getNewToken(String baseUrl) throws IOException;
 }

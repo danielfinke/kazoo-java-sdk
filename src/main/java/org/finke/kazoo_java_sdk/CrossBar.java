@@ -22,24 +22,31 @@ public class CrossBar {
     protected Scheme scheme = DEFAULT_SCHEME;
     protected String host;
     protected int port = DEFAULT_PORT;
+    protected AuthTokenInterface authToken;
 
     /**
      * Create a CrossBar instance that connects to the given host on the
      * default CrossBar port
      * @param host Server hostname or IP address
+     * @param authToken An auth token generator for authentication when making
+     *     requests
      */
     public CrossBar(String host, AuthTokenInterface authToken) throws URISyntaxException {
         parseHost(host);
+        this.authToken = authToken;
     }
 
     /**
      * Create a CrossBar instance that connects to the given host and port
      * @param host Server hostname or IP address
      * @param port Port that is hosting CrossBar
+     * @param authToken An auth token generator for authentication when making
+     *     requests
      */
-    public CrossBar(String host, int port) throws URISyntaxException {
+    public CrossBar(String host, int port, AuthTokenInterface authToken) throws URISyntaxException {
         parseHost(host);
         this.port = port;
+        this.authToken = authToken;
     }
 
     public Scheme getScheme() { return scheme; }
@@ -96,7 +103,7 @@ public class CrossBar {
     /**
      *
      */
-    
+
 
     /**
      * Parse a host string for scheme and host

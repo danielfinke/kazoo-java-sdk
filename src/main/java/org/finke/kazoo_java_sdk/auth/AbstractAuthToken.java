@@ -8,12 +8,11 @@ import java.io.IOException;
  */
 public abstract class AbstractAuthToken implements AuthTokenInterface {
     protected String authToken = null;
-    protected String authUrl = null;
 
     /**
      * Get the current auth token
      * @return The token to use for requests
      */
     @Override
-    public String getToken() throws IOException { return authToken; }
+    public String getToken(String baseUrl) throws IOException { return authToken; }
 }

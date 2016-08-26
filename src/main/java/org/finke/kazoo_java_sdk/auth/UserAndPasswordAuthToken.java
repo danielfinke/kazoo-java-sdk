@@ -17,6 +17,8 @@ import java.security.NoSuchAlgorithmException;
  * @since 2016-08-08
  */
 public class UserAndPasswordAuthToken extends AbstractAuthToken {
+    protected static final String AUTH_URL = "/user_auth";
+
     protected String username;
     protected String md5;
     protected String accountId;
@@ -30,28 +32,27 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
      * @param username The auth username
      * @param password The auth password
      * @param accountIdOrName Account ID or Account Name to authenticate in
-     * @param authUrl The URL to PUT auth credentials
      */
-    public UserAndPasswordAuthToken(String username, String password, String accountIdOrName, String authUrl) {
+    public UserAndPasswordAuthToken(String username, String password, String accountIdOrName) {
         this.username = username;
         try {
             md5 = md5Encode(username + ":" + password);
         }
         catch(NoSuchAlgorithmException | UnsupportedEncodingException ex) {}
         accountId = accountIdOrName;
-        this.authUrl = authUrl;
     }
 
     /**
      * Get the current auth token, generating it if it has not already been
+     * @param baseUrl The base URL for auth requests
      * @return The token to use for requests
      * @throws IOException if the token auth URL is not a valid URL or a
      *     connection cannot be established to the server
      */
     @Override
-    public String getToken() throws IOException {
+    public String getToken(String baseUrl) throws IOException {
         if(authToken == null) {
-            return getNewToken();
+            return getNewToken(baseUrl);
         }
 
         return authToken;
@@ -59,13 +60,14 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
 
     /**
      * Request a new auth token for requests. Replaces the previous token
+     * @param baseUrl The base URL for auth requests
      * @return The new token to use for requests
      * @throws IOException if the token auth URL is not a valid URL or a
      *     connection cannot be established to the server
      */
     @Override
-    public String getNewToken() throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection)(new URL(authUrl).openConnection());
+    public String getNewToken(String baseUrl) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection)(new URL(baseUrl + AUTH_URL).openConnection());
         urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         urlConnection.setRequestMethod("PUT");
         urlConnection.setDoOutput(true);
