@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import org.finke.kazoo_java_sdk.net.JSONRequestWrapper;
+import org.finke.kazoo_java_sdk.net.JSONWrappableInterface;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -144,13 +146,13 @@ public class UserAndPasswordAuthToken extends AbstractAuthToken {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
-        return gson.toJson(jsonObj);
+        return JSONRequestWrapper.wrapJSON(jsonObj, gson);
     }
 
     /**
      * Representation of JSON required for auth request payload
      */
-    private class UserAndPasswordJson {
+    private class UserAndPasswordJson implements JSONWrappableInterface {
         @SuppressWarnings("unused")
         @SerializedName("credentials") private final String md5;
         @SuppressWarnings("unused")
